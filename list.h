@@ -2,7 +2,7 @@
 #define LIST_H
 
 #include<stdlib.h>
- 
+
 
 typedef struct _ListElem ListElem;
 
@@ -37,4 +37,3 @@ int list_rem_next(List *list, ListElem *elem, void **data);
 #define list_next(element) ((element)->next)
 
 #endif
-
