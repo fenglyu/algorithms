@@ -53,12 +53,18 @@ int main(void){
     int *c;
     list_rem_next(list, NULL, (void **)&c);
     ListElem *e2 = list_head(list);
+    i = 0;
+    DListElem *t;
     while(e2 != NULL){
+        if(i++%9 == 0)
+            t = e2;
         printf("%d\n", *(int *)e2->data);
         e2 = list_next(e2);
     }
     printf("list size: %d\n", list_size(list));
     printf(" the removed value is %d\n", *c);
+
+
 
     list_destory(list);
     if(list != NULL)
