@@ -7,6 +7,17 @@
 //    free(data);
 //}
 
+void printL(List *dlist){
+
+    ListElem *e =  dlist->head;
+    while(e != NULL){
+        printf("%d\n", *(int *)e->data);
+        e = e->next;
+    }
+    return ;
+}
+
+
 int main(void){
 
     List *list;
@@ -52,22 +63,20 @@ int main(void){
     printf("list size: %d\n", list_size(list));
     int *c;
     list_rem_next(list, NULL, (void **)&c);
-    ListElem *e2 = list_head(list);
-    i = 0;
-    DListElem *t;
-    while(e2 != NULL){
-        if(i++%9 == 0)
-            t = e2;
-        printf("%d\n", *(int *)e2->data);
-        e2 = list_next(e2);
-    }
+
     printf("list size: %d\n", list_size(list));
     printf(" the removed value is %d\n", *c);
 
 
+    printf("Before:\n");
+    printL(list);
+    printf(" reverse list:\n");
+    list_for_reverse(list);
+    printf("After:\n");
+    printL(list);
 
     list_destory(list);
-    if(list != NULL)
-        free(list);
+    free(list);
+
     return 0;
 }

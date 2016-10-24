@@ -58,6 +58,8 @@ int dlist_ins_next(DList *dlist, DListElem *element, const void *data){
     dlist->size++;
     return 0;
 }
+
+
 int dlist_ins_prev(DList *dlist, DListElem *element, const void *data){
 
     DListElem *new_element;
@@ -102,6 +104,12 @@ int dlist_remove(DList *dlist, DListElem *element, void **data){
 
     *data = element->data;
 
+    /*
+     *  2 pointers need to reset after element is removed,
+     *  list->head move to element->next
+     *  if element->next is NULL, reset dlist->tail
+     *  else reset element->next->prev
+     */
     if(element == dlist->head){
         dlist->head = element->next;
 

@@ -86,3 +86,25 @@ int list_rem_next(List *list, ListElem *element, void **data){
 
     return 0;
 }
+
+int list_for_reverse(List *list){
+    ListElem *element, *tmp;
+    if(list->head == NULL || list->head->next ==NULL){
+        return -1;
+    }
+
+    element = list->head->next;
+    list->tail = list->head;
+
+    while(element->next != NULL){
+        tmp = element->next;
+        element->next = list->head;
+        list->head = element;
+        element = tmp;
+    }
+
+    return 0;
+}
+
+
+int list_recurisively_invocation_reverse(List *list);
