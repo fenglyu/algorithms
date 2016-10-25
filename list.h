@@ -28,7 +28,7 @@ int list_ins_next(List *list, ListElem *elem, const void *data);
 int list_rem_next(List *list, ListElem *elem, void **data);
 
 int list_for_reverse(List *list);
-int list_recurisively_invocation_reverse(List *list);
+List *list_recurisively_invocation_reverse(List *list);
 
 #define list_head(list) ((list)->head)
 #define list_tail(list) ((list)->tail)

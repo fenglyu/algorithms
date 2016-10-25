@@ -1,2 +1,2 @@
 # algorithm-c
-A implementation of data structures in C language.
+An implementation of data structures in C language.
