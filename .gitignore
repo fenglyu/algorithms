@@ -32,3 +32,5 @@
 *.dSYM/
 t_list
 t_dlist
+*.swp
+linkedlist/t_clist

@@ -1,4 +1,5 @@
 #ifndef DLIST_H
+#define DLIST_H
 #include <stdio.h>
 
 typedef struct _dlistelem{
