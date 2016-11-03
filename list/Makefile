@@ -57,4 +57,4 @@ t_set: set.o list.o t_set.o
 
 
 clean:
-	rm -f *.o t_list t_dlist t_stack t_queue
+	rm -f *.o t_list t_dlist t_stack t_queue t_set

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "list.h"
 
@@ -22,6 +22,9 @@ void list_destory(List *list){
             list->destory(data);
         }
     }
+
+    memset(list, 0, sizeof(List));
+    return;
 }
 
 int list_ins_next(List *list, ListElem *element, const void *data){
@@ -120,9 +123,10 @@ void printL(List *list){
 
     ListElem *e =  list->head;
     while(e != NULL){
-        printf("%d\n", *(int *)e->data);
+        printf("%-4d", *(int *)e->data);
         e = e->next;
     }
+    printf("\n");
     return ;
 }
 
