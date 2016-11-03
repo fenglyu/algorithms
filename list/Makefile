@@ -48,5 +48,13 @@ t_queue.o : t_queue.c queue.h
 t_queue: queue.o  list.o t_queue.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
+set.o : set.c set.h list.h
+
+t_set.o : t_set.c set.h
+
+t_set: set.o list.o t_set.o
+	$(CC) -o $@ $^ $(CFLAGS)
+
+
 clean:
 	rm -f *.o t_list t_dlist t_stack t_queue

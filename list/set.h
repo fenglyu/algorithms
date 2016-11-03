@@ -31,4 +31,6 @@ int set_is_equal(const Set *set, const Set *set1);
 
 #define set_size list_size
 
+#define printS printL
+
 #endif
