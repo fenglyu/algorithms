@@ -49,4 +49,4 @@ t_queue: queue.o  list.o t_queue.o
 	$(CC) -o $@ $^ $(CFLAGS)
 
 clean:
-	rm -f $(DLIST_OBJ) $(OBJ) t_list t_dlist t_stack t_queue
+	rm -f *.o t_list t_dlist t_stack t_queue
