@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
 
@@ -111,5 +112,17 @@ List *list_recurisively_invocation_reverse(List *list){
     if (list_size(list) == 0)
         return NULL;
 
-    ListElem *new, *rest;
+    return NULL;
 }
+
+
+void printL(List *list){
+
+    ListElem *e =  list->head;
+    while(e != NULL){
+        printf("%d\n", *(int *)e->data);
+        e = e->next;
+    }
+    return ;
+}
+
