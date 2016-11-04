@@ -73,13 +73,13 @@ int set_intersection(Set *set, const Set *set1, const Set *set2){
     for(member = list_head(set1); member != NULL; member = list_next(member)){
         if (set_is_member(set2, list_data(member))){
             data = list_data(member);
-           if( set_insert(set, data) != 0){
+           if( list_ins_next(set, list_tail(set), data) != 0){
                set_destory(set);
                return -1;
             }
         }else{
             continue;
-        } 
+        }
     }
 
     return 0;
@@ -92,15 +92,17 @@ int set_difference(Set *set, const Set *set1, const Set *set2){
     set_init(set, set1->match, set1->destory);
 
     for(member = list_head(set1); member != NULL; member = list_next(member)){
-        if(!set_is_member(set2, member)){
+        if(!set_is_member(set2, list_data(member))){
             data = list_data(member);
 
-            if( set_insert(set, data) != 0 ){
+            // use list_ins_next instead of set_insert because list_ins_next
+            // is O(1), while set_insert is O(n), data is guaranteed in set
+            if( list_ins_next(set,list_tail(set), data) != 0 ){
                 set_destory(set);
                 return -1;
             }
         }
-    } 
+    }
 
     return 0;
 }
@@ -117,7 +119,7 @@ int set_is_member(const Set *set, const void *data){
 
 /* if set1 is a subset of set2 */
 int set_is_subset(const Set *set1, const Set *set2){
-    
+
     ListElem *member;
 
     if(set_size(set1) > set_size(set2))
@@ -125,7 +127,7 @@ int set_is_subset(const Set *set1, const Set *set2){
 
     for (member = list_head(set1); member != NULL; member = list_next(member)){
         if(!set_is_member(set2, list_data(member)))
-           return 0; 
+           return 0;
     }
 
     return 1;

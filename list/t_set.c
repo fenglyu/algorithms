@@ -71,12 +71,17 @@ int main(void){
     printS(set);
     set_destory(set);
 
-    printf("set difference :\n");
+    printf("set difference (set1 - set2) : \n");
     set_init(set, match, NULL);
     set_difference(set, set1, set2);
     printS(set);
     set_destory(set);
 
+    printf("set difference (set2 - set1) : \n");
+    set_init(set, match, NULL);
+    set_difference(set, set2, set1);
+    printS(set);
+    set_destory(set);
 
     printf("set is subset :\n");
     set_init(set, match, NULL);
