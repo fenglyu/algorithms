@@ -119,14 +119,14 @@ List *list_recurisively_invocation_reverse(List *list){
 }
 
 
-void printL(List *list){
-
-    ListElem *e =  list->head;
-    while(e != NULL){
-        printf("%-4d", *(int *)e->data);
-        e = e->next;
-    }
-    printf("\n");
-    return ;
-}
+//void printL(List *list){
+//
+//    ListElem *e =  list->head;
+//    while(e != NULL){
+//        printf("%-4d", *(int *)e->data);
+//        e = e->next;
+//    }
+//    printf("\n");
+//    return ;
+//}
 
