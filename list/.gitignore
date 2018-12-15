@@ -32,3 +32,4 @@
 *.dSYM/
 t_list
 t_set
+t_clist
