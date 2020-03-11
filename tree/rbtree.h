@@ -18,8 +18,17 @@ struct rbtree_node_s {
 
 typedef struct rbtree_s rbtree_t;
 
+
+typdef void (*rbtree_insert_pt)(rbtree_node_t *root,
+	rbtree_node_t *node, rbtree_node_t *sentinel);
+
+
 struct rbtree_s {
-	
+	rbtree_t *root;
+	rbtree_t *sentinel;
+	rbtree_insert_pt insert;	
 }
+
+
 #endif
 
