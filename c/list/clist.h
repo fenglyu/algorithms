@@ -28,4 +28,3 @@ int clist_rem_next(CList *list, CListElem *element, void **data);
 
 
 #endif
-
