@@ -36,3 +36,4 @@ t_dlist
 linkedlist/t_clist
 list/t_queue
 t/test.c
+.idea
