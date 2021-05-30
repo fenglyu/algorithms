@@ -36,23 +36,31 @@ func (i *IntSlice) String() string {
 	return fmt.Sprintf("%v", i.slices)
 }
 
-type String struct {
+type StringSlice struct {
 	slices []string
 }
 
-func (s *String) Len() int {
+func (s *StringSlice) Len() int {
 	return len(s.slices)
 }
 
-func (s *String) Less(a, b int) bool {
-	i, j := len(s.slices[a]), len(s.slices[b])
-	if i == 0 && j == 0 {
-		return false
-	} else if i == 0  {
-		
+func (s *StringSlice) Less(a, b int) bool {
+	short, long := []byte(s.slices[a]), []byte(s.slices[b])
+
+	for i, _ := range short {
+		if i > len(long)-1 {
+			// b has no more character, a is bigger
+			return false
+		}
+
+		if short[i] > long[i] {
+			return false
+		}
 	}
+
+	return true
 }
 
-func (s *String) Swap(a, b int) {
-
+func (s *StringSlice) Swap(a, b int) {
+	s.slices[a], s.slices[b] = s.slices[b], s.slices[a]
 }
