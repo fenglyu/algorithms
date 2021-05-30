@@ -12,6 +12,13 @@ func TestInsertSortInt(t *testing.T) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
 	}
 }
+func TestQuickSortInt(t *testing.T) {
+	tests, expected := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}, &IntSlice{[]int{1, 2, 3, 5, 7, 9}}
+	quickSort(tests, 0, tests.Len())
+	if !reflect.DeepEqual(tests, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}
 
 func TestInsertSortStrings(t *testing.T) {
 	tests, expected := &StringSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StringSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
@@ -20,3 +27,12 @@ func TestInsertSortStrings(t *testing.T) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
 	}
 }
+
+func TestQuickSortStrings(t *testing.T) {
+	tests, expected := &StringSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StringSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
+	quickSort(tests, 0, tests.Len())
+	if !reflect.DeepEqual(tests, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}
+
