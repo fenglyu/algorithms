@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/cespare/xxhash"
+//	"github.com/cespare/xxhash"
 )
-
+/*
 func xxhash64(data Interface) uint64 {
 	buf := new(bytes.Buffer)
 	err := binary.Write(buf, binary.LittleEndian, data)
@@ -17,7 +17,7 @@ func xxhash64(data Interface) uint64 {
 	}
 	return xxhash.Sum64(buf.Bytes())
 }
-
+*/
 func countHash(a interface{}) int {
 	var hc int = 0
 	buf := new(bytes.Buffer)
