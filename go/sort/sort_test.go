@@ -36,3 +36,12 @@ func TestQuickSortStrings(t *testing.T) {
 	}
 }
 
+func TestCountSortInt(t *testing.T) {
+	//tests, expected := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}, &IntSlice{[]int{1, 2, 3, 5, 7, 9}}
+	//tests, expected := []int{2, 9, 3, 5, 1, 7}, []int{1, 2, 3, 5, 7, 9}
+	tests, expected := []interface{}{2, 9, 3, 5, 1, 7}, []interface{}{1, 2, 3, 5, 7, 9}
+	countSort(tests)
+	if !reflect.DeepEqual(tests, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}

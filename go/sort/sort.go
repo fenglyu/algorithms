@@ -1,7 +1,5 @@
 package sort
 
-import "fmt"
-
 type Interface interface {
 	Len() int
 	Less(i, j int) bool
@@ -16,26 +14,26 @@ func insertSort(data Interface, a, b int) {
 	}
 }
 
-func quickSort(data Interface, a , b int) {
+func quickSort(data Interface, a, b int) {
 	if a >= b {
-		return 
+		return
 	}
 	p := partition(data, a, b)
-	quickSort(data, a, p)  // uppder boundary doesn't include p
+	quickSort(data, a, p) // uppder boundary doesn't include p
 	quickSort(data, p+1, b)
 }
 
-func selectPivot(data Interface, a, b int) int{
-	return (a + b) / 2 
+func selectPivot(data Interface, a, b int) int {
+	return (a + b) / 2
 }
 
-func partition(data Interface, a, b int) int{
-	pivotIdx := selectPivot(data,a,b)
+func partition(data Interface, a, b int) int {
+	pivotIdx := selectPivot(data, a, b)
 
 	data.Swap(b-1, pivotIdx)
 
 	store := a
-	for i:=a; i< b-1 ;i++{
+	for i := a; i < b-1; i++ {
 		if data.Less(i, b-1) {
 			data.Swap(i, store)
 			store++
@@ -45,53 +43,27 @@ func partition(data Interface, a, b int) int{
 	return store
 }
 
-type IntSlice struct {
-	Slices []int
-}
-
-func (i *IntSlice) Len() int {
-	return len(i.Slices)
-}
-
-func (is *IntSlice) Less(i, j int) bool {
-	return is.Slices[i] < is.Slices[j]
-}
-
-func (i *IntSlice) Swap(a, b int) {
-	i.Slices[a], i.Slices[b] = i.Slices[b], i.Slices[a]
-}
-
-func (i *IntSlice) String() string {
-	return fmt.Sprintf("%v", i.Slices)
-}
-
-type StringSlice struct {
-	Slices []string
-}
-
-func (s *StringSlice) Len() int {
-	return len(s.Slices)
-}
-
-func (s *StringSlice) Less(a, b int) bool {
-	short, long := []byte(s.Slices[a]), []byte(s.Slices[b])
-	for i, _ := range short {
-		if i > len(long)-1 {
-			// b has no more character, a is bigger
-			return false
+func countSort(data []interface{}) {
+	bucketSize := 10000
+	bucket := make([][]int, bucketSize)
+	for i := 0; i < len(data); i++ {
+		idx := countHash(data[i]) % bucketSize
+		if bucket[idx] == nil {
+			//bucket[idx] = list.New()
+			bucket[idx] = make([]int, 0)
 		}
-		if short[i] == long[i]{
-			continue
-		}else if short[i] > long[i] {
-			return false
-		}else{
-			return true
+		// bucket[idx].PushBack(data[i])
+		bucket[idx] = append(bucket[idx], data[i].(int))
+	}
+}
+
+func extract(bucket [][]int, data []int) {
+	idx := 0
+	for i := 0; i < len(bucket); i++ {
+		insertSort(&IntSlice{bucket[i]}, 0, len(bucket[i]))
+		for _, v := range bucket[i] {
+			data[idx] = v
+			idx++
 		}
 	}
-
-	return true
-}
-
-func (s *StringSlice) Swap(a, b int) {
-	s.Slices[a], s.Slices[b] = s.Slices[b], s.Slices[a]
 }
