@@ -44,10 +44,10 @@ func partition(data Interface, a, b int) int {
 }
 
 func countSort(data []interface{}) {
-	bucketSize := 10000
+	bucketSize := 100
 	bucket := make([][]int, bucketSize)
 	for i := 0; i < len(data); i++ {
-		idx := countHash(data[i]) % bucketSize
+		idx := int(countHash(data[i]) % uint64(bucketSize))
 		if bucket[idx] == nil {
 			//bucket[idx] = list.New()
 			bucket[idx] = make([]int, 0)
@@ -55,9 +55,10 @@ func countSort(data []interface{}) {
 		// bucket[idx].PushBack(data[i])
 		bucket[idx] = append(bucket[idx], data[i].(int))
 	}
+	extract(bucket, data)
 }
 
-func extract(bucket [][]int, data []int) {
+func extract(bucket [][]int, data []interface{}) {
 	idx := 0
 	for i := 0; i < len(bucket); i++ {
 		insertSort(&IntSlice{bucket[i]}, 0, len(bucket[i]))
