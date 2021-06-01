@@ -2,6 +2,7 @@ package sort
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -40,6 +41,15 @@ func TestCountSortInt(t *testing.T) {
 	//tests, expected := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}, &IntSlice{[]int{1, 2, 3, 5, 7, 9}}
 	//tests, expected := []int{2, 9, 3, 5, 1, 7}, []int{1, 2, 3, 5, 7, 9}
 	tests, expected := []interface{}{2, 9, 3, 5, 1, 7}, []interface{}{1, 2, 3, 5, 7, 9}
+	countSortInt(tests)
+	if !reflect.DeepEqual(tests, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}
+
+func TestCountSortString(t *testing.T) {
+	tests, expected := []interface{}{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
+	sort.Strings(expected)
 	countSort(tests)
 	if !reflect.DeepEqual(tests, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
