@@ -47,11 +47,21 @@ func TestCountSortInt(t *testing.T) {
 	}
 }
 
+/*
 func TestCountSortString(t *testing.T) {
 	tests, expected := []interface{}{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
 	sort.Strings(expected)
 	countSort(tests)
 	if !reflect.DeepEqual(tests, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}
+*/
+func TestCountSortInter(t *testing.T) {
+	tests, expected := &StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
+	sort.Strings(expected)
+	countSortInter(tests)
+	if !reflect.DeepEqual(tests.Slices, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests.Slices)
 	}
 }

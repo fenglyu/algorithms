@@ -1,12 +1,25 @@
 package sort
 
+import "reflect"
+
 type Interface interface {
 	Len() int
 	Less(i, j int) bool
 	Swap(i, j int)
 }
 
-// ?
+type HashInterface interface {
+	Interface
+	HashCode(v interface{}) uint64
+	IndexOrSet(i int, val interface{}) interface{}
+}
+
+var _ HashInterface = (*StringSlice)(nil)
+var _ HashInterface = (*IntSlice)(nil)
+
+//var _ HashInterface = StringSlice{} // Verify that T implements I.
+//var _ HashInterface = IntSlice{}    // Verify that T implements I.
+//var _ I = (*T)(nil)                 // Verify that *T implements I.
 func insertSort(data Interface, a, b int) {
 	for i := a + 1; i < b; i++ {
 		for j := i - 1; j >= a && data.Less(j+1, j); j-- {
@@ -68,25 +81,70 @@ func extract(bucket [][]int, data []interface{}) {
 	}
 }
 
-func countSortInter(data Interface) {
+/*
+ */
+func countSortInter(data HashInterface) {
 	bucketSize := 100
-	bucket := make([]interface{}, bucketSize)
-	for i := 0; i < len(data); i++ {
-		idx := int(data.HashCode(data[i]) % uint64(bucketSize))
+	bucket := make([][]interface{}, bucketSize)
+	for i := 0; i < data.Len(); i++ {
+		idx := int(data.HashCode(data.IndexOrSet(i, nil)) % uint64(bucketSize))
 		if bucket[idx] == nil {
 			bucket[idx] = make([]interface{}, 0)
 		}
-		bucket[idx] = append(bucket[idx], data[i])
+		bucket[idx] = append(bucket[idx], data.IndexOrSet(i, nil))
+	}
+	extractInter(bucket, data)
+}
+
+func extractInter(bucket [][]interface{}, data HashInterface) {
+	idx := 0
+	var sls StringSlice
+	var ils IntSlice
+
+	for i := 0; i < len(bucket); i++ {
+		slices := bucket[i]
+		switch v := reflect.ValueOf(slices); v.Kind() {
+		case reflect.String:
+			s := make([]string, len(slices))
+			for i, v := range slices {
+				s[i] = v.(string)
+			}
+			sls = StringSlice{Slices: s}
+			insertSort(&sls, 0, len(bucket[i]))
+			for _, v := range sls.Slices {
+				data.IndexOrSet(idx, v)
+				idx++
+			}
+		case reflect.Int:
+			s := make([]int, len(slices))
+			for i, v := range slices {
+				s[i] = v.(int)
+			}
+			ils = IntSlice{Slices: s}
+			insertSort(&ils, 0, len(bucket[i]))
+			for _, v := range ils.Slices {
+				data.IndexOrSet(idx, v)
+				idx++
+			}
+		}
 	}
 }
 
-func extractInter(bucket []interface{}, data Interface) {
-	idx := 0
-	for i := 0; i < len(bucket); i++ {
-		insertSort(&IntSlice{bucket[i]}, 0, len(bucket[i]))
-		for _, v := range bucket[i] {
-			data[idx] = v
-			idx++
+func convertSlice(slices []interface{}) interface{} {
+	switch v := reflect.ValueOf(slices[0]); v.Kind() {
+	case reflect.String:
+		s := make([]string, len(slices))
+		for i, v := range slices {
+			s[i] = v.(string)
 		}
+		return StringSlice{Slices: s}
+	case reflect.Int:
+		s := make([]int, len(slices))
+		for i, v := range slices {
+			s[i] = v.(int)
+		}
+		return IntSlice{Slices: s}
 	}
+
+	return nil
 }
