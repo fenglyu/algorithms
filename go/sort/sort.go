@@ -103,7 +103,10 @@ func extractInter(bucket [][]interface{}, data HashInterface) {
 
 	for i := 0; i < len(bucket); i++ {
 		slices := bucket[i]
-		switch v := reflect.ValueOf(slices); v.Kind() {
+		if len(slices) < 1 {
+			continue
+		}
+		switch v := reflect.ValueOf(slices[0]); v.Kind() {
 		case reflect.String:
 			s := make([]string, len(slices))
 			for i, v := range slices {
