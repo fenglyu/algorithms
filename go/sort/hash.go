@@ -1,5 +1,9 @@
 package sort
 
+import (
+	"math"
+)
+
 //	"github.com/cespare/xxhash"
 
 /*
@@ -12,6 +16,21 @@ func xxhash64(data Interface) uint64 {
 	return xxhash.Sum64(buf.Bytes())
 }
 */
+
+// N element to run countHash
+var N int = 3
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+/*
+Hash function to identify bucket number form element. Customized
+to properly encode elements in order within the buckets
+*/
 func countHash(a interface{}) uint64 {
 	var hc uint64 = 0
 
@@ -20,8 +39,13 @@ func countHash(a interface{}) uint64 {
 		hc = uint64(a.(int))
 	case string:
 		data := []byte(a.(string))
-		for i := 0; i < len(data); i++ {
-			hc += uint64(data[i] - '0')
+		mask := make([]uint64, N)
+		for i := 0; i < N; i++ {
+			mask[i] = uint64(math.Pow(26.0, float64(N-1-i)))
+		}
+		//mask := []int{676, 26, 1}
+		for i := 0; i < min(len(data), N); i++ {
+			hc += uint64(data[i]-'a') * mask[i]
 		}
 	}
 	return hc

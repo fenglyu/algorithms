@@ -2,7 +2,7 @@ package sort
 
 import (
 	"reflect"
-	//"sort"
+	"sort"
 	"testing"
 )
 
@@ -56,6 +56,8 @@ func TestCountSortString(t *testing.T) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
 	}
 }
+*/
+
 // hash algorithm not working for []string currently
 func TestCountSortInterStr(t *testing.T) {
 	tests, expected := &StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
@@ -64,7 +66,7 @@ func TestCountSortInterStr(t *testing.T) {
 	if !reflect.DeepEqual(tests.Slices, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests.Slices)
 	}
-}*/
+}
 
 func TestCountSortIterInt(t *testing.T) {
 	tests, expected := &IntSlice{Slices: []int{2, 9, 3, 5, 1, 7}}, []int{1, 2, 3, 5, 7, 9}

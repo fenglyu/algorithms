@@ -81,10 +81,12 @@ func extract(bucket [][]int, data []interface{}) {
 	}
 }
 
-/*
- */
+func numBuckets() int {
+	return 26 * 26 * 26
+}
+
 func countSortInter(data HashInterface) {
-	bucketSize := 100
+	bucketSize := numBuckets()
 	bucket := make([][]interface{}, bucketSize)
 	for i := 0; i < data.Len(); i++ {
 		idx := int(data.HashCode(data.IndexOrSet(i, nil)) % uint64(bucketSize))
