@@ -8,10 +8,14 @@ type Interface interface {
 	Swap(i, j int)
 }
 
+type IndexInterface interface {
+	IndexOrSet(i int, val interface{}) interface{}
+}
+
 type HashInterface interface {
 	Interface
+	IndexInterface
 	HashCode(v interface{}) uint64
-	IndexOrSet(i int, val interface{}) interface{}
 }
 
 var _ HashInterface = (*StringSlice)(nil)
