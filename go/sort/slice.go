@@ -1,6 +1,9 @@
 package sort
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type IntSliceIface interface {
 	Interface
@@ -39,6 +42,20 @@ func (i *IntSlice) Convert(slices []interface{}) []int {
 		s[i] = v.(int)
 	}
 	return s
+}
+
+func (i *IntSlice) Clone(inter interface{}) interface{} {
+	nInter := reflect.New(reflect.TypeOf(inter).Elem())
+
+	//	fmt.Printf("reflect Elem() %v \n", nInter)
+	val := reflect.ValueOf(inter).Elem()
+	nVal := nInter.Elem()
+	for i := 0; i < val.NumField(); i++ {
+		nvField := nVal.Field(i)
+		nvField.Set(val.Field(i))
+	}
+
+	return nInter.Interface()
 }
 
 func (i *IntSlice) String() string {
@@ -93,4 +110,17 @@ func (s *StringSlice) Convert(slices []interface{}) []string {
 		t[i] = v.(string)
 	}
 	return t
+}
+
+func (s *StringSlice) Clone(inter interface{}) interface{} {
+	nInter := reflect.New(reflect.TypeOf(inter).Elem())
+
+	val := reflect.ValueOf(inter).Elem()
+	nVal := nInter.Elem()
+	for i := 0; i < val.NumField(); i++ {
+		nvField := nVal.Field(i)
+		nvField.Set(val.Field(i))
+	}
+
+	return nInter.Interface()
 }

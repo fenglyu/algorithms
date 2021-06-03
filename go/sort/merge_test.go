@@ -2,10 +2,10 @@ package sort
 
 import (
 	"reflect"
-	s "testing"
+	"testing"
 )
 
-func TestInsertSortInt(t *testing.T) {
+func TestMergeSortInt(t *testing.T) {
 	tests, expected := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}, &IntSlice{[]int{1, 2, 3, 5, 7, 9}}
 	mergeSort(tests)
 	if !reflect.DeepEqual(tests, expected) {
