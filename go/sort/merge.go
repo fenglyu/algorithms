@@ -51,18 +51,20 @@ func Clone(from interface{}) interface{} {
 
 func mergeSort(data MergeInterface) {
 	//copy := Clone(data)
-	cp := data.Clone(data).(*IntSlice)
+	//cp := data.Clone(data).(*IntSlice)
+	cp := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}
+	//fmt.Println("cp == data", cp == data)
 	mergesort_array(cp, data, 0, data.Len())
 }
 
-func mergesort_array(data, result MergeInterface, start, end int) {
+func mergesort_array(data MergeInterface, result MergeInterface, start, end int) {
 	if end-start < 2 {
 		return
 	}
 
 	if end-start == 2 {
-		if data.Less(start+1, start) {
-			data.Swap(start, start+1)
+		if result.Less(start+1, start) {
+			result.Swap(start, start+1)
 		}
 		return
 	}
@@ -76,7 +78,7 @@ func mergesort_array(data, result MergeInterface, start, end int) {
 	for idx < end {
 		if j >= end || (i < mid && data.Less(i, j)) {
 			//result[i] = data[i]
-			result.IndexOrSet(i, data.IndexOrSet(i, nil))
+			result.IndexOrSet(idx, data.IndexOrSet(i, nil))
 			i++
 		} else {
 			//result[idx] = data[j]
