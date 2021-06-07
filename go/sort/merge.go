@@ -1,5 +1,10 @@
 package sort
 
+import (
+	"fmt"
+	"reflect"
+)
+
 /*
 Conceptually, a merge sort works as follows:
     Divide the unsorted list into n sublists, each containing one element (a list of one element is considered sorted).
@@ -17,42 +22,59 @@ type MergeInterface interface {
 }
 
 // Clone slices
-/*
-func Clone(from interface{}) interface{} {
-	v := reflect.ValueOf(from)
-	if v.Kind() != reflect.Slice || v.Kind() != reflect.Array {
-		return nil
-	}
-
-	if v.Len() < 1 {
-		return nil
-	}
-
-	switch k := v.Index(0); k.Kind() {
-	case reflect.Int:
-		//sType := reflect.SliceOf(reflect.TypeOf(int(0)))
-		sType := reflect.TypeOf((*MergeInterface)(nil)) //.Elem()
-		to := reflect.MakeSlice(sType, v.Len(), v.Len()*2)
-		for i := 0; i < from.Len(); i++ {
-			to.IndexOrSet(i, from.IndexOrSet(i, nil))
+//func Clone(from MergeInterface) interface{} {
+func Clone(from MergeInterface) MergeInterface {
+	getType := reflect.TypeOf(from)
+	getValue := reflect.ValueOf(from)
+	dc := reflect.New(getType)
+	for i := 0; i < getType.NumField(); i++ {
+		f := getType.Field(i)
+		if f.PkgPath != "" {
+			continue
 		}
-		return to
-	case reflect.String:
-		sType := reflect.SliceOf(reflect.TypeOf(string("")))
-		to := reflect.MakeSlice(sType, v.Len(), v.Len()*2)
-		for i := 0; i < from.Len(); i++ {
-			to.IndexOrSet(i, from.IndexOrSet(i, nil))
+		x := getValue.Field(i).Interface()
+		fmt.Printf("Field(%d)", i, x)
+
+		item, err := copySlice(x)
+		if err != nil {
+			fmt.Errorf("failed to copy the field %v in the struct %#v: %v", getType.Field(i).Name, x, err)
 		}
-		return to
+
+		fmt.Println("item ", item)
+		dc.Elem().Field(i).Set(reflect.ValueOf(item))
 	}
-	return nil
+	//fmt.Println("dc -> elem -> interface", dc.Elem().Interface())
+	return dc.Elem().Interface()
 }
-*/
+
+func copySlice(x interface{}) (interface{}, error) {
+	v := reflect.ValueOf(x)
+	if v.Kind() != reflect.Slice {
+		return nil, fmt.Errorf("must pass a value with kind of Slice; got %v", v.Kind())
+	}
+
+	size := v.Len()
+	t := reflect.TypeOf(x)
+	dc := reflect.MakeSlice(t, size, size)
+
+	for i := 0; i < size; i++ {
+		//      kind := reflect.ValueOf(x).Kind()
+		//      if kind == reflect.Array || kind == reflect.Chan || kind == reflect.Func || kind == reflect.Interface || kind == reflect.Map || kind == reflect.Ptr || kind == reflect.Slice || kind == reflect.Struct || kind == reflect.UnsafePointer {
+		//          return nil, fmt.Errorf("unable to copy %v (a %v) as a primitive", x, kind)
+		//      }
+		iv := reflect.ValueOf(v.Index(i).Interface())
+		if iv.IsValid() {
+			dc.Index(i).Set(iv)
+		}
+	}
+
+	return dc.Interface(), nil
+}
 
 func mergeSort(data MergeInterface) {
-	//copy := Clone(data)
+	cp := Clone(data)
 	//cp := data.Clone(data).(*IntSlice)
-	cp := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}
+	//cp := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}
 	//fmt.Println("cp == data", cp == data)
 	mergesort_array(cp, data, 0, data.Len())
 }
