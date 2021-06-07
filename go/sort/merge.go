@@ -2,7 +2,9 @@ package sort
 
 import (
 	"fmt"
+	"math"
 	"reflect"
+	"unsafe"
 )
 
 /*
@@ -18,9 +20,10 @@ type Cloneable interface {
 type MergeInterface interface {
 	Interface
 	IndexInterface
-	Cloneable
+	//Cloneable
 }
 
+/*
 // Clone slices
 //func Clone(from MergeInterface) interface{} {
 func Clone(from MergeInterface) MergeInterface {
@@ -43,8 +46,84 @@ func Clone(from MergeInterface) MergeInterface {
 		fmt.Println("item ", item)
 		dc.Elem().Field(i).Set(reflect.ValueOf(item))
 	}
+
 	//fmt.Println("dc -> elem -> interface", dc.Elem().Interface())
+		indexSetFunc := func(in []reflect.Value) []reflect.Value {
+			return []reflect.Value{in[1], in[0]}
+			if len(in) < 3 { // pointer, index, value is missing
+				fieldP, flag := getType.FieldByName("Slices")
+				if !flag {
+					fmt.Println("Error ")
+				}
+				in[1].Elem()
+			}
+			return s.Slices[a]
+		}
+
+
+	makeSwap := func(fptr interface{}) {
+		// fptr is a pointer to a function.
+		// Obtain the function value itself (likely nil) as a reflect.Value
+		// so that we can query its type and then set the value.
+		fn := reflect.ValueOf(fptr).Elem()
+
+		// Make a function of the right type.
+		v := reflect.MakeFunc(fn.Type(), swap)
+
+		// Assign it to the value fn represents.
+		fn.Set(v)
+	}
+
+	var intSwap func(int, int) (int, int)
+	makeSwap(&intSwap)
+	fmt.Println(intSwap(0, 1))
+
+	// Make and call a swap function for float64s.
+	var floatSwap func(float64, float64) (float64, float64)
+	makeSwap(&floatSwap)
+	fmt.Println(floatSwap(2.72, 3.14))
 	return dc.Elem().Interface()
+}
+
+*/
+
+func Clone(from MergeInterface) MergeInterface {
+	var cloned MergeInterface
+	getType := reflect.TypeOf(from).Elem()
+	cloned = from
+	if getType.NumField() < 1 {
+		fmt.Errorf("Fields number is 0\n")
+		return nil
+	}
+	fieldP, flag := getType.FieldByName("Slices") // 拿到 p 的字段信息。
+	if !flag {
+		fmt.Println("Error ")
+	} // 先做一次浅拷贝。'
+	tv := reflect.ValueOf(from).Elem() // 拿到 t 的反射值。
+	p := tv.FieldByIndex(fieldP.Index) // 拿到 t.p 的反射值，虽然不让写，但是可以读。
+
+	num1 := p.Len()
+	c := p.Cap()
+	clonedP := reflect.MakeSlice(fieldP.Type, num1, c) // 构造一个新的 slice。
+	src := unsafe.Pointer(p.Pointer())                 // 拿到 p 数据指针。
+	dst := unsafe.Pointer(clonedP.Pointer())           // 拿到 clonedP 数据指针。
+	sz := int(p.Type().Elem().Size())                  // 计算出 []int 单个数组元素的长度，即 int 的长度。
+	l := num1 * sz                                     // 得到 p 的数据真实内存字节数。
+	cc := c * sz                                       // 得到 p 的 cap 真实内存字节数。
+
+	// 直接无视类型进行内存拷贝，相当于 C 语言里面的 memcpy。
+	copy((*[math.MaxInt32]byte)(dst)[:l:cc], (*[math.MaxInt32]byte)(src)[:l:cc])
+
+	ptr := unsafe.Pointer(uintptr(unsafe.Pointer(reflect.ValueOf(cloned).Pointer())) + fieldP.Offset) // 拿到 p 的真实内存位置。
+
+	// 这里已知 p 是一个 slice，用 `SliceHeader` 进行强制拷贝，相当于做了 cloned.p = clonedP。
+	*(*reflect.SliceHeader)(ptr) = reflect.SliceHeader{
+		Data: uintptr(dst),
+		Len:  num1,
+		Cap:  c,
+	}
+
+	return cloned
 }
 
 func copySlice(x interface{}) (interface{}, error) {
@@ -75,7 +154,7 @@ func mergeSort(data MergeInterface) {
 	cp := Clone(data)
 	//cp := data.Clone(data).(*IntSlice)
 	//cp := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}
-	//fmt.Println("cp == data", cp == data)
+	fmt.Println("cp == data", cp == data, cp)
 	mergesort_array(cp, data, 0, data.Len())
 }
 
