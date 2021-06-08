@@ -2,9 +2,7 @@ package sort
 
 import (
 	"fmt"
-	"math"
 	"reflect"
-	"unsafe"
 )
 
 /*
@@ -14,18 +12,21 @@ Conceptually, a merge sort works as follows:
 */
 
 type Cloneable interface {
-	Clone(inter interface{}) interface{}
+	Clone() (interface{}, error)
 }
 
 type MergeInterface interface {
 	Interface
 	IndexInterface
-	//Cloneable
+	Cloneable
 }
+
+//var _ MergeInterface = (*StrSlice)(nil)
+//var _ MergeInterface = (*IntSlice)(nil)
 
 /*
 // Clone slices
-//func Clone(from MergeInterface) interface{} {
+// func Clone(from MergeInterface) interface{} {
 func Clone(from MergeInterface) MergeInterface {
 	getType := reflect.TypeOf(from)
 	getValue := reflect.ValueOf(from)
@@ -47,45 +48,39 @@ func Clone(from MergeInterface) MergeInterface {
 		dc.Elem().Field(i).Set(reflect.ValueOf(item))
 	}
 
-	//fmt.Println("dc -> elem -> interface", dc.Elem().Interface())
-		indexSetFunc := func(in []reflect.Value) []reflect.Value {
-			return []reflect.Value{in[1], in[0]}
-			if len(in) < 3 { // pointer, index, value is missing
-				fieldP, flag := getType.FieldByName("Slices")
-				if !flag {
-					fmt.Println("Error ")
-				}
-				in[1].Elem()
-			}
-			return s.Slices[a]
+	// fmt.Println("dc -> elem -> interface", dc.Elem().Interface())
+	indexSetFunc := func(in []reflect.Value) []reflect.Value {
+		//if len(in) < 3 {
+		// pointer, index, value is missing
+		fieldP, flag := getType.FieldByName("Slices")
+		if !flag {
+			fmt.Println("Error ")
 		}
-
-
-	makeSwap := func(fptr interface{}) {
-		// fptr is a pointer to a function.
-		// Obtain the function value itself (likely nil) as a reflect.Value
-		// so that we can query its type and then set the value.
-		fn := reflect.ValueOf(fptr).Elem()
-
-		// Make a function of the right type.
-		v := reflect.MakeFunc(fn.Type(), swap)
-
-		// Assign it to the value fn represents.
-		fn.Set(v)
+		in[1].Elem()
+		//}
+		return s.Slices[a]
 	}
 
-	var intSwap func(int, int) (int, int)
-	makeSwap(&intSwap)
-	fmt.Println(intSwap(0, 1))
+	//makeSwap := func(fptr interface{}) {
+	//	fn := reflect.ValueOf(fptr).Elem()
+	//	v := reflect.MakeFunc(fn.Type(), swap)
+	//	fn.Set(v)
+	//}
 
-	// Make and call a swap function for float64s.
-	var floatSwap func(float64, float64) (float64, float64)
-	makeSwap(&floatSwap)
-	fmt.Println(floatSwap(2.72, 3.14))
+	//	var intSwap func(int, int) (int, int)
+	//	makeSwap(&intSwap)
+	//	fmt.Println(intSwap(0, 1))
+	//
+	//	// Make and call a swap function for float64s.
+	//	var floatSwap func(float64, float64) (float64, float64)
+	//	makeSwap(&floatSwap)
+	//	fmt.Println(floatSwap(2.72, 3.14))
+	makeIndexOrSet := func(fptr interface{}) {
+
+	}
 	return dc.Elem().Interface()
 }
 
-*/
 
 func Clone(from MergeInterface) MergeInterface {
 	var cloned MergeInterface
@@ -98,7 +93,7 @@ func Clone(from MergeInterface) MergeInterface {
 	fieldP, flag := getType.FieldByName("Slices") // 拿到 p 的字段信息。
 	if !flag {
 		fmt.Println("Error ")
-	} // 先做一次浅拷贝。'
+	}
 	tv := reflect.ValueOf(from).Elem() // 拿到 t 的反射值。
 	p := tv.FieldByIndex(fieldP.Index) // 拿到 t.p 的反射值，虽然不让写，但是可以读。
 
@@ -125,6 +120,7 @@ func Clone(from MergeInterface) MergeInterface {
 
 	return cloned
 }
+*/
 
 func copySlice(x interface{}) (interface{}, error) {
 	v := reflect.ValueOf(x)
@@ -151,11 +147,16 @@ func copySlice(x interface{}) (interface{}, error) {
 }
 
 func mergeSort(data MergeInterface) {
-	cp := Clone(data)
-	//cp := data.Clone(data).(*IntSlice)
-	//cp := &IntSlice{[]int{2, 9, 3, 5, 1, 7}}
-	fmt.Println("cp == data", cp == data, cp)
-	mergesort_array(cp, data, 0, data.Len())
+	//cp := Clone(data)
+	//cp := IntSlice{Slices: []int{2, 9, 3, 5, 1, 7}}
+	cp, err := data.Clone()
+	if err != nil {
+		fmt.Println("err: ", err)
+	}
+	//cp := StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}
+	//fmt.Println("cp == data", cp == data, cp, cp.IndexOrSet(0, nil) == data.IndexOrSet(0, nil))
+	//mergesort_array(cp, data, 0, data.Len())
+	mergesort_array(cp.(MergeInterface), data, 0, data.Len())
 }
 
 func mergesort_array(data MergeInterface, result MergeInterface, start, end int) {

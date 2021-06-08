@@ -2,7 +2,6 @@ package sort
 
 import (
 	"fmt"
-	"reflect"
 )
 
 type IntSliceIface interface {
@@ -44,6 +43,7 @@ func (i *IntSlice) Convert(slices []interface{}) []int {
 	return s
 }
 
+/*
 func (i *IntSlice) Clone(inter interface{}) interface{} {
 	nInter := reflect.New(reflect.TypeOf(inter).Elem())
 
@@ -57,20 +57,32 @@ func (i *IntSlice) Clone(inter interface{}) interface{} {
 
 	return nInter.Interface()
 }
+*/
+func (i *IntSlice) Clone() (interface{}, error) {
+	cp := *i
+	ns, err := copySlice(i.Slices)
+	if err != nil {
+		return nil, err
+	}
+	cp.Slices = ns.([]int)
+	//fmt.Println("cp.Slices: ", &cp.Slices[0] == &i.Slices[0])
+	//fmt.Println("cp ->: ", cp, *i)
+	return &cp, nil
+}
 
 func (i *IntSlice) String() string {
 	return fmt.Sprintf("%v", i.Slices)
 }
 
-type StringSlice struct {
+type StrSlice struct {
 	Slices []string
 }
 
-func (s *StringSlice) Len() int {
+func (s *StrSlice) Len() int {
 	return len(s.Slices)
 }
 
-func (s *StringSlice) Less(a, b int) bool {
+func (s *StrSlice) Less(a, b int) bool {
 	short, long := []byte(s.Slices[a]), []byte(s.Slices[b])
 	for i, _ := range short {
 		if i > len(long)-1 {
@@ -89,22 +101,23 @@ func (s *StringSlice) Less(a, b int) bool {
 	return true
 }
 
-func (s *StringSlice) Swap(a, b int) {
+func (s *StrSlice) Swap(a, b int) {
 	s.Slices[a], s.Slices[b] = s.Slices[b], s.Slices[a]
 }
 
-func (s *StringSlice) HashCode(v interface{}) uint64 {
+func (s *StrSlice) HashCode(v interface{}) uint64 {
 	return countHash(v)
 }
 
-func (s *StringSlice) IndexOrSet(a int, val interface{}) interface{} {
+func (s *StrSlice) IndexOrSet(a int, val interface{}) interface{} {
 	if val != nil {
 		s.Slices[a] = val.(string)
+		//s.Slices[a] = val.(string)
 	}
 	return s.Slices[a]
 }
 
-func (s *StringSlice) Convert(slices []interface{}) []string {
+func (s *StrSlice) Convert(slices []interface{}) []string {
 	t := make([]string, len(slices))
 	for i, v := range slices {
 		t[i] = v.(string)
@@ -112,15 +125,14 @@ func (s *StringSlice) Convert(slices []interface{}) []string {
 	return t
 }
 
-func (s *StringSlice) Clone(inter interface{}) interface{} {
-	nInter := reflect.New(reflect.TypeOf(inter).Elem())
-
-	val := reflect.ValueOf(inter).Elem()
-	nVal := nInter.Elem()
-	for i := 0; i < val.NumField(); i++ {
-		nvField := nVal.Field(i)
-		nvField.Set(val.Field(i))
+func (s *StrSlice) Clone() (interface{}, error) {
+	cp := *s
+	ns, err := copySlice(s.Slices)
+	if err != nil {
+		return nil, err
 	}
-
-	return nInter.Interface()
+	cp.Slices = ns.([]string)
+	fmt.Println("cp.Slices: ", &cp.Slices[0] == &s.Slices[0])
+	fmt.Println("cp ->: ", cp, *s)
+	return cp, nil
 }

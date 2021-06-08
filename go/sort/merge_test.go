@@ -2,6 +2,7 @@ package sort
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -10,5 +11,16 @@ func TestMergeSortInt(t *testing.T) {
 	mergeSort(tests)
 	if !reflect.DeepEqual(tests, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
+	}
+}
+
+/*
+ */
+func TestMergeSortString(t *testing.T) {
+	tests, expected := &StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
+	sort.Strings(expected)
+	mergeSort(tests)
+	if !reflect.DeepEqual(tests.Slices, expected) {
+		t.Errorf("Expected %v, Actually result %v\n", expected, tests.Slices)
 	}
 }
