@@ -2,6 +2,7 @@ package sort
 
 import (
 	"fmt"
+	"reflect"
 )
 
 type IntSliceIface interface {
@@ -58,16 +59,19 @@ func (i *IntSlice) Clone(inter interface{}) interface{} {
 	return nInter.Interface()
 }
 */
-func (i *IntSlice) Clone() (interface{}, error) {
+func (i *IntSlice) Clone() (interface{}, string, error) {
 	cp := *i
+	tname := reflect.TypeOf(cp)
 	ns, err := copySlice(i.Slices)
 	if err != nil {
-		return nil, err
+		return nil, tname.Name(), err
 	}
 	cp.Slices = ns.([]int)
 	//fmt.Println("cp.Slices: ", &cp.Slices[0] == &i.Slices[0])
 	//fmt.Println("cp ->: ", cp, *i)
-	return &cp, nil
+
+	//return &cp, tname, nil
+	return &cp, tname.Name(), nil
 }
 
 func (i *IntSlice) String() string {
@@ -125,14 +129,13 @@ func (s *StrSlice) Convert(slices []interface{}) []string {
 	return t
 }
 
-func (s *StrSlice) Clone() (interface{}, error) {
+func (s *StrSlice) Clone() (interface{}, string, error) {
 	cp := *s
+	tname := reflect.TypeOf(cp)
 	ns, err := copySlice(s.Slices)
 	if err != nil {
-		return nil, err
+		return nil, tname.Name(), err
 	}
 	cp.Slices = ns.([]string)
-	fmt.Println("cp.Slices: ", &cp.Slices[0] == &s.Slices[0])
-	fmt.Println("cp ->: ", cp, *s)
-	return cp, nil
+	return &cp, tname.Name(), nil
 }

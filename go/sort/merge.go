@@ -12,7 +12,7 @@ Conceptually, a merge sort works as follows:
 */
 
 type Cloneable interface {
-	Clone() (interface{}, error)
+	Clone() (interface{}, string, error)
 }
 
 type MergeInterface interface {
@@ -147,15 +147,13 @@ func copySlice(x interface{}) (interface{}, error) {
 }
 
 func mergeSort(data MergeInterface) {
-	//cp := Clone(data)
-	//cp := IntSlice{Slices: []int{2, 9, 3, 5, 1, 7}}
-	cp, err := data.Clone()
+	//cp, dataType, err := data.Clone()
+	cp, _, err := data.Clone()
 	if err != nil {
 		fmt.Println("err: ", err)
 	}
 	//cp := StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}
 	//fmt.Println("cp == data", cp == data, cp, cp.IndexOrSet(0, nil) == data.IndexOrSet(0, nil))
-	//mergesort_array(cp, data, 0, data.Len())
 	mergesort_array(cp.(MergeInterface), data, 0, data.Len())
 }
 
