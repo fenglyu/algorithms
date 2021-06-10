@@ -21,7 +21,7 @@ type MergeInterface interface {
 	Cloneable
 }
 
-//var _ MergeInterface = (*StrSlice)(nil)
+//var _ MergeInterface = (*StringSlice)(nil)
 //var _ MergeInterface = (*IntSlice)(nil)
 
 /*
@@ -152,7 +152,7 @@ func mergeSort(data MergeInterface) {
 	if err != nil {
 		fmt.Println("err: ", err)
 	}
-	//cp := StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}
+	//cp := StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}
 	//fmt.Println("cp == data", cp == data, cp, cp.IndexOrSet(0, nil) == data.IndexOrSet(0, nil))
 	mergesort_array(cp.(MergeInterface), data, 0, data.Len())
 }

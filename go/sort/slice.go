@@ -78,15 +78,15 @@ func (i *IntSlice) String() string {
 	return fmt.Sprintf("%v", i.Slices)
 }
 
-type StrSlice struct {
+type StringSlice struct {
 	Slices []string
 }
 
-func (s *StrSlice) Len() int {
+func (s *StringSlice) Len() int {
 	return len(s.Slices)
 }
 
-func (s *StrSlice) Less(a, b int) bool {
+func (s *StringSlice) Less(a, b int) bool {
 	short, long := []byte(s.Slices[a]), []byte(s.Slices[b])
 	for i, _ := range short {
 		if i > len(long)-1 {
@@ -105,15 +105,15 @@ func (s *StrSlice) Less(a, b int) bool {
 	return true
 }
 
-func (s *StrSlice) Swap(a, b int) {
+func (s *StringSlice) Swap(a, b int) {
 	s.Slices[a], s.Slices[b] = s.Slices[b], s.Slices[a]
 }
 
-func (s *StrSlice) HashCode(v interface{}) uint64 {
+func (s *StringSlice) HashCode(v interface{}) uint64 {
 	return countHash(v)
 }
 
-func (s *StrSlice) IndexOrSet(a int, val interface{}) interface{} {
+func (s *StringSlice) IndexOrSet(a int, val interface{}) interface{} {
 	if val != nil {
 		s.Slices[a] = val.(string)
 		//s.Slices[a] = val.(string)
@@ -121,7 +121,7 @@ func (s *StrSlice) IndexOrSet(a int, val interface{}) interface{} {
 	return s.Slices[a]
 }
 
-func (s *StrSlice) Convert(slices []interface{}) []string {
+func (s *StringSlice) Convert(slices []interface{}) []string {
 	t := make([]string, len(slices))
 	for i, v := range slices {
 		t[i] = v.(string)
@@ -129,7 +129,7 @@ func (s *StrSlice) Convert(slices []interface{}) []string {
 	return t
 }
 
-func (s *StrSlice) Clone() (interface{}, string, error) {
+func (s *StringSlice) Clone() (interface{}, string, error) {
 	cp := *s
 	tname := reflect.TypeOf(cp)
 	ns, err := copySlice(s.Slices)

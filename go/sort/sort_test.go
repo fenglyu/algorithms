@@ -22,7 +22,7 @@ func TestQuickSortInt(t *testing.T) {
 }
 
 func TestInsertSortStrings(t *testing.T) {
-	tests, expected := &StrSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StrSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
+	tests, expected := &StringSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StringSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
 	insertSort(tests, 0, tests.Len())
 	if !reflect.DeepEqual(tests, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
@@ -30,7 +30,7 @@ func TestInsertSortStrings(t *testing.T) {
 }
 
 func TestQuickSortStrings(t *testing.T) {
-	tests, expected := &StrSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StrSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
+	tests, expected := &StringSlice{[]string{"azbcef", "abcde", "abccd", "aaa"}}, &StringSlice{[]string{"aaa", "abccd", "abcde", "azbcef"}}
 	quickSort(tests, 0, tests.Len())
 	if !reflect.DeepEqual(tests, expected) {
 		t.Errorf("Expected %v, Actually result %v\n", expected, tests)
@@ -60,7 +60,7 @@ func TestCountSortString(t *testing.T) {
 
 // hash algorithm not working for []string currently
 func TestCountSortInterStr(t *testing.T) {
-	tests, expected := &StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
+	tests, expected := &StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
 	sort.Strings(expected)
 	countSortInter(tests)
 	if !reflect.DeepEqual(tests.Slices, expected) {

@@ -18,10 +18,10 @@ type HashInterface interface {
 	HashCode(v interface{}) uint64
 }
 
-var _ HashInterface = (*StrSlice)(nil)
+var _ HashInterface = (*StringSlice)(nil)
 var _ HashInterface = (*IntSlice)(nil)
 
-//var _ HashInterface = StrSlice{} // Verify that T implements I.
+//var _ HashInterface = StringSlice{} // Verify that T implements I.
 //var _ HashInterface = IntSlice{}    // Verify that T implements I.
 //var _ I = (*T)(nil)                 // Verify that *T implements I.
 func insertSort(data Interface, a, b int) {
@@ -104,7 +104,7 @@ func countSortInter(data HashInterface) {
 
 func extractInter(bucket [][]interface{}, data HashInterface) {
 	idx := 0
-	var sls StrSlice
+	var sls StringSlice
 	var ils IntSlice
 
 	for i := 0; i < len(bucket); i++ {
@@ -118,7 +118,7 @@ func extractInter(bucket [][]interface{}, data HashInterface) {
 			for i, v := range slices {
 				s[i] = v.(string)
 			}
-			sls = StrSlice{Slices: s}
+			sls = StringSlice{Slices: s}
 			insertSort(&sls, 0, len(bucket[i]))
 			for _, v := range sls.Slices {
 				data.IndexOrSet(idx, v)
@@ -146,7 +146,7 @@ func convertSlice(slices []interface{}) interface{} {
 		for i, v := range slices {
 			s[i] = v.(string)
 		}
-		return StrSlice{Slices: s}
+		return StringSlice{Slices: s}
 	case reflect.Int:
 		s := make([]int, len(slices))
 		for i, v := range slices {

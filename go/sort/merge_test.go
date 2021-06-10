@@ -17,7 +17,7 @@ func TestMergeSortInt(t *testing.T) {
 /*
  */
 func TestMergeSortString(t *testing.T) {
-	tests, expected := &StrSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
+	tests, expected := &StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}, []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}
 	sort.Strings(expected)
 	mergeSort(tests)
 	if !reflect.DeepEqual(tests.Slices, expected) {
