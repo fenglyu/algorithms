@@ -11,16 +11,6 @@ Conceptually, a merge sort works as follows:
     Repeatedly merge sublists to produce new sorted sublists until there is only one sublist remaining. This will be the sorted list.
 */
 
-type Cloneable interface {
-	Clone() (interface{}, string, error)
-}
-
-type MergeInterface interface {
-	Interface
-	IndexInterface
-	Cloneable
-}
-
 //var _ MergeInterface = (*StringSlice)(nil)
 //var _ MergeInterface = (*IntSlice)(nil)
 
@@ -122,6 +112,20 @@ func Clone(from MergeInterface) MergeInterface {
 }
 */
 
+type Cloneable interface {
+	Clone() (interface{}, string, error)
+}
+
+type IndexInterface interface {
+	IndexOrSet(i int, val interface{}) interface{}
+}
+
+type MergeInterface interface {
+	Interface
+	IndexInterface
+	Cloneable
+}
+
 func copySlice(x interface{}) (interface{}, error) {
 	v := reflect.ValueOf(x)
 	if v.Kind() != reflect.Slice {
@@ -133,10 +137,6 @@ func copySlice(x interface{}) (interface{}, error) {
 	dc := reflect.MakeSlice(t, size, size)
 
 	for i := 0; i < size; i++ {
-		//      kind := reflect.ValueOf(x).Kind()
-		//      if kind == reflect.Array || kind == reflect.Chan || kind == reflect.Func || kind == reflect.Interface || kind == reflect.Map || kind == reflect.Ptr || kind == reflect.Slice || kind == reflect.Struct || kind == reflect.UnsafePointer {
-		//          return nil, fmt.Errorf("unable to copy %v (a %v) as a primitive", x, kind)
-		//      }
 		iv := reflect.ValueOf(v.Index(i).Interface())
 		if iv.IsValid() {
 			dc.Index(i).Set(iv)
@@ -152,8 +152,6 @@ func mergeSort(data MergeInterface) {
 	if err != nil {
 		fmt.Println("err: ", err)
 	}
-	//cp := StringSlice{Slices: []string{"Go", "Bravo", "Gopher", "Alpha", "Grin", "Delta"}}
-	//fmt.Println("cp == data", cp == data, cp, cp.IndexOrSet(0, nil) == data.IndexOrSet(0, nil))
 	mergesort_array(cp.(MergeInterface), data, 0, data.Len())
 }
 

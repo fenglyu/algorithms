@@ -55,7 +55,6 @@ func (i *IntSlice) Clone(inter interface{}) interface{} {
 		nvField := nVal.Field(i)
 		nvField.Set(val.Field(i))
 	}
-
 	return nInter.Interface()
 }
 */
@@ -67,10 +66,6 @@ func (i *IntSlice) Clone() (interface{}, string, error) {
 		return nil, tname.Name(), err
 	}
 	cp.Slices = ns.([]int)
-	//fmt.Println("cp.Slices: ", &cp.Slices[0] == &i.Slices[0])
-	//fmt.Println("cp ->: ", cp, *i)
-
-	//return &cp, tname, nil
 	return &cp, tname.Name(), nil
 }
 

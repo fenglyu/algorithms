@@ -8,10 +8,6 @@ type Interface interface {
 	Swap(i, j int)
 }
 
-type IndexInterface interface {
-	IndexOrSet(i int, val interface{}) interface{}
-}
-
 type HashInterface interface {
 	Interface
 	IndexInterface
