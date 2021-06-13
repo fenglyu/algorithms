@@ -41,6 +41,7 @@ func quickSort(data Interface, a, b int) {
 	quickSort(data, p+1, b)
 }
 
+// https://algs4.cs.princeton.edu/code/
 // https://stackoverflow.com/questions/7559608/median-of-three-values-strategy
 //  https://stackoverflow.com/questions/23025694/is-there-no-xor-operator-for-booleans-in-golang
 /*
@@ -55,12 +56,30 @@ func medianOfThree(a, b, c int) int {
 	}
 }*/
 
-func meadianOfThree(data Interface, a, b, c int) {
-	
+// medianOfThree moves the median of the three values data[m0], data[m1], data[m2] into data[m1].
+func meadianOfThree(data Interface, m1, m0, m2 int) {
+	if data.Less(m1, m0) {
+		data.Swap(m1, m0)
+	}
+
+	// data[m0] <= data[m1]
+	if data.Less(m2, m1) {
+		data.Swap(m2, m1)
+		// data[m0] <= data[m2] && data[m1] < data[m2]
+		if data.Less(m1, m0) {
+			data.Swap(m1, m0)
+		}
+	}
 }
 
+/*
 func selectPivot(data Interface, a, b int) int {
 	return (a + b) / 2
+}
+*/
+
+func selectPivot(data Interface, lo, hi int) (midlo, midhi int) {
+
 }
 
 func partition(data Interface, a, b int) int {
