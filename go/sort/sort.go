@@ -77,7 +77,7 @@ func selectPivot(data Interface, a, b int) int {
 	return (a + b) / 2
 }
 */
-
+// https://github.com/golang/go/blob/master/src/sort/sort.go
 func selectPivot(data Interface, lo, hi int) (midlo, midhi int) {
 
 }
