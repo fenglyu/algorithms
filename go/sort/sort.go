@@ -28,6 +28,10 @@ func insertSort(data Interface, a, b int) {
 	}
 }
 
+/*
+A Killer Adversary for Quicksort
+https://www.cs.dartmouth.edu/~doug/mdmspe.pdf
+*/
 func quickSort(data Interface, a, b int) {
 	if a >= b {
 		return
@@ -35,6 +39,24 @@ func quickSort(data Interface, a, b int) {
 	p := partition(data, a, b)
 	quickSort(data, a, p) // uppder boundary doesn't include p
 	quickSort(data, p+1, b)
+}
+
+// https://stackoverflow.com/questions/7559608/median-of-three-values-strategy
+//  https://stackoverflow.com/questions/23025694/is-there-no-xor-operator-for-booleans-in-golang
+/*
+func medianOfThree(a, b, c int) int {
+	switch {
+	case (a > b) != (a > c):
+		return a
+	case (b < a) != (b < c):
+		return b
+	default:
+		return c
+	}
+}*/
+
+func meadianOfThree(data Interface, a, b, c int) {
+	
 }
 
 func selectPivot(data Interface, a, b int) int {
