@@ -145,7 +145,7 @@ func (n *BinaryNode) rotateRight() *BinaryNode {
 
 /*
 	Perform left-right rotation on given node
-	Addr: shorturl.at/uCGQ3
+	Addr: shorturl.at/nzGTX
             ┌───┐                                     ┌────┐
             │ 50│                                     │ 40 │\
             └───┘                                   //└────┘\\
@@ -180,7 +180,7 @@ func (n *BinaryNode) rotateLeftRight() *BinaryNode {
 
 /*
 	Perform right-left rotation on given node
-	Addr: shorturl.at/uCGQ3
+	Addr: shorturl.at/nzGTX
            ┌───┐                                       ┌───┐
            │ 30│                                       │40 │
          //└───┘                                      /└───┘
