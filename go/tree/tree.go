@@ -143,15 +143,84 @@ func (n *BinaryNode) rotateRight() *BinaryNode {
 
 }
 
-// Perform left-rigth rotation on given node
-
+/*
+	Perform left-right rotation on given node
+	Addr: shorturl.at/uCGQ3
+            ┌───┐                                     ┌────┐
+            │ 50│                                     │ 40 │\
+            └───┘                                   //└────┘\\
+           //                                      //        \\
+       ┌───/                                   ┌────┐         \\────┐
+       │ 30│                                  /│ 30 │          │ 50 │
+      /└───┘\             ─────────►         //└────┘        //└────┘
+┌───┐//     \\ ┌───┐                        //    \\        //
+│30L│        \\│40 │                   ┌───┐/      \────┐ ┌─/──┐
+└───┘         /└───\\                  │30L│       │ 40L│ │ 40R│
+             //     \\                 └───┘       └────┘ └────┘
+         ┌───/     ┌─\─┐
+         │40L│     │40R│
+         └───┘     └───┘
+*/
 func (n *BinaryNode) rotateLeftRight() *BinaryNode {
-	return nil
+	child := n.l
+	newRoot := child.r
 
+	grand1, grand2 := newRoot.l, newRoot.r
+
+	child.r = grand1
+	newRoot.l = child
+	newRoot.r = n
+
+	n.l = grand2
+
+	child.computeHeight()
+	n.computeHeight()
+	return newRoot
 }
 
-// Perform  rigth-left rotation on given node
+/*
+	Perform right-left rotation on given node
+	Addr: shorturl.at/uCGQ3
+           ┌───┐                                       ┌───┐
+           │ 30│                                       │40 │
+         //└───┘                                      /└───┘
+        //     \\                                    //    \\
+       //       \\                                  /       \\
+  ┌────┐         \───┐                         ┌───┐         \────┐
+  │ 30L│         │ 60│        ───────►        /│30 │         ┼ 60 │
+  └────┘       //└───\                       //└───\\        /────┘
+              //     \\                     //      \\      //   \\
+          ┌───/       \────┐            ┌───/      ┌─\─┐ ┌──/│    \\┌────┐
+         /│ 40│       │ 60R│            │30L│      │40L│ │40R│      │60R │
+        //└───┘       └────┘            └───┘      └───┘ └───┘      └────┘
+       //    \\
+    ┌──/│     \┌───┐
+    │40L│      │40R│
+    └───┘      └───┘
+*/
 func (n *BinaryNode) rotateRightLeft() *BinaryNode {
-	return nil
+	child := n.r
+	newRoot := child.l
 
+	grand1, grand2 := newRoot.l, newRoot.r
+
+	child.l = grand2
+	newRoot.l = n
+	newRoot.r = child
+	n.r = grand2
+
+	child.computeHeight()
+	n.computeHeight()
+	return newRoot
+}
+
+// https://www.educative.io/edpresso/how-to-invert-a-binary-tree
+/*
+Max Howell
+@mxcl
+Google: 90% of our engineers use the software you wrote (Homebrew), but you can’t invert a binary tree on a whiteboard so fuck off.
+*/
+
+func (n *BinaryNode) invertion() *BinaryNode {
+	return nil
 }
