@@ -1,8 +1,8 @@
 package tree
 
-import "fmt"
-
-//func (n *Node) Len() int
+import (
+	"fmt"
+)
 
 type BinaryTree struct {
 	root *BinaryNode
@@ -11,7 +11,11 @@ type BinaryTree struct {
 // Insert value into proper location in Binary Tree
 func (t *BinaryTree) Add(value interface{}) {
 	if t.root == nil {
-		t.root = &BinaryNode{Value: value}
+		t.root = &BinaryNode{
+			Value:  value,
+			l:      nil,
+			r:      nil,
+			height: 0}
 	} else {
 		t.root = t.root.Add(value)
 	}
@@ -92,6 +96,7 @@ func (n *BinaryNode) heightDifference() int {
 }
 
 func (n *BinaryNode) Add(value interface{}) *BinaryNode {
+	//fmt.Printf("[Add] cur node %d, left %v, right %v\n", n.Value, n.l, n.r)
 	newRoot := n
 	// if vale <= n.Value
 	if !n.Less(value) {
@@ -105,11 +110,11 @@ func (n *BinaryNode) Add(value interface{}) *BinaryNode {
 		}
 	} else {
 		n.r = n.addToSubTree(n.r, value)
-		if n.heightDifference() == 02 {
+		if n.heightDifference() == -2 {
 			if n.r.Less(value) {
 				newRoot = n.rotateLeft()
 			} else {
-				newRoot = n.rotateLeftRight()
+				newRoot = n.rotateRightLeft()
 			}
 		}
 	}
@@ -119,6 +124,7 @@ func (n *BinaryNode) Add(value interface{}) *BinaryNode {
 
 // Add value to parent subtree(if exists) and return root in case it has changed because of rotation
 func (n *BinaryNode) addToSubTree(parent *BinaryNode, value interface{}) *BinaryNode {
+	//fmt.Printf("[addToSubTree]cur node %d,  left %v, right %v\n", n.Value, n.l, n.r)
 	if parent == nil {
 		return NewNode(value)
 	}
@@ -169,7 +175,7 @@ func (n *BinaryNode) rotateRight() *BinaryNode {
 func (n *BinaryNode) rotateLeftRight() *BinaryNode {
 	child := n.l
 	newRoot := child.r
-
+	//fmt.Println("rotateLeftRight: ", newRoot, newRoot.l, newRoot.r)
 	grand1, grand2 := newRoot.l, newRoot.r
 
 	child.r = grand1
