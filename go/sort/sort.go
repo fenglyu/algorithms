@@ -72,15 +72,16 @@ func meadianOfThree(data Interface, m1, m0, m2 int) {
 	}
 }
 
-/*
 func selectPivot(data Interface, a, b int) int {
 	return (a + b) / 2
 }
-*/
+
+/*
 // https://github.com/golang/go/blob/master/src/sort/sort.go
 func selectPivot(data Interface, lo, hi int) (midlo, midhi int) {
 
 }
+*/
 
 func partition(data Interface, a, b int) int {
 	pivotIdx := selectPivot(data, a, b)
