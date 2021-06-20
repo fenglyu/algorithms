@@ -39,11 +39,31 @@ func (n *BinaryNode) inorder() {
 	if n.l != nil {
 		n.l.inorder()
 	}
-	fmt.Println(n.Value)
+	fmt.Printf("%d ", n.Value)
 
 	if n.r != nil {
 		n.r.inorder()
 	}
+}
+
+func (n *BinaryNode) preorder() {
+	fmt.Printf("%d ", n.Value)
+	if n.l != nil {
+		n.l.preorder()
+	}
+	if n.r != nil {
+		n.r.preorder()
+	}
+}
+
+func (n *BinaryNode) postorder() {
+	if n.l != nil {
+		n.l.postorder()
+	}
+	if n.r != nil {
+		n.r.postorder()
+	}
+	fmt.Printf("%d ", n.Value)
 }
 
 func (n *BinaryNode) Less(v interface{}) bool {
