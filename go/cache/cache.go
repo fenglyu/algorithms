@@ -31,6 +31,7 @@ func New(maxBytes int) *Cache {
 
 func (c *Cache) Get(k []byte) []byte {
 
+	return nil
 }
 
 func (c *Cache) Set(k, v []byte) {

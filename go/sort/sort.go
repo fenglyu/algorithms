@@ -11,7 +11,7 @@ type Interface interface {
 type HashInterface interface {
 	Interface
 	IndexInterface
-	HashCode(v interface{}) uint64
+	HashCode(v any) uint64
 }
 
 var _ HashInterface = (*StringSlice)(nil)
@@ -99,7 +99,7 @@ func partition(data Interface, a, b int) int {
 	return store
 }
 
-func countSortInt(data []interface{}) {
+func countSortInt(data []any) {
 	bucketSize := 100
 	bucket := make([][]int, bucketSize)
 	for i := 0; i < len(data); i++ {
@@ -112,7 +112,7 @@ func countSortInt(data []interface{}) {
 	extract(bucket, data)
 }
 
-func extract(bucket [][]int, data []interface{}) {
+func extract(bucket [][]int, data []any) {
 	idx := 0
 	for i := 0; i < len(bucket); i++ {
 		insertSort(&IntSlice{bucket[i]}, 0, len(bucket[i]))
@@ -129,18 +129,18 @@ func numBuckets() int {
 
 func countSortInter(data HashInterface) {
 	bucketSize := numBuckets()
-	bucket := make([][]interface{}, bucketSize)
+	bucket := make([][]any, bucketSize)
 	for i := 0; i < data.Len(); i++ {
 		idx := int(data.HashCode(data.IndexOrSet(i, nil)) % uint64(bucketSize))
 		if bucket[idx] == nil {
-			bucket[idx] = make([]interface{}, 0)
+			bucket[idx] = make([]any, 0)
 		}
 		bucket[idx] = append(bucket[idx], data.IndexOrSet(i, nil))
 	}
 	extractInter(bucket, data)
 }
 
-func extractInter(bucket [][]interface{}, data HashInterface) {
+func extractInter(bucket [][]any, data HashInterface) {
 	idx := 0
 	var sls StringSlice
 	var ils IntSlice
@@ -177,7 +177,7 @@ func extractInter(bucket [][]interface{}, data HashInterface) {
 	}
 }
 
-func convertSlice(slices []interface{}) interface{} {
+func convertSlice(slices []any) any {
 	switch v := reflect.ValueOf(slices[0]); v.Kind() {
 	case reflect.String:
 		s := make([]string, len(slices))

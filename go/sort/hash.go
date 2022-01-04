@@ -31,7 +31,7 @@ func min(a, b int) int {
 Hash function to identify bucket number form element. Customized
 to properly encode elements in order within the buckets
 */
-func countHash(a interface{}) uint64 {
+func countHash(a any) uint64 {
 	var hc uint64 = 0
 
 	switch a.(type) {

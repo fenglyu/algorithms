@@ -113,11 +113,11 @@ func Clone(from MergeInterface) MergeInterface {
 */
 
 type Cloneable interface {
-	Clone() (interface{}, string, error)
+	Clone() (any, string, error)
 }
 
 type IndexInterface interface {
-	IndexOrSet(i int, val interface{}) interface{}
+	IndexOrSet(i int, val any) any
 }
 
 type MergeInterface interface {
@@ -126,7 +126,7 @@ type MergeInterface interface {
 	Cloneable
 }
 
-func copySlice(x interface{}) (interface{}, error) {
+func copySlice(x any) (any, error) {
 	v := reflect.ValueOf(x)
 	if v.Kind() != reflect.Slice {
 		return nil, fmt.Errorf("must pass a value with kind of Slice; got %v", v.Kind())

@@ -9,7 +9,7 @@ type BinaryTree struct {
 }
 
 // Insert value into proper location in Binary Tree
-func (t *BinaryTree) Add(value interface{}) {
+func (t *BinaryTree) Add(value any) {
 	if t.root == nil {
 		t.root = &BinaryNode{
 			Value:  value,
@@ -22,7 +22,7 @@ func (t *BinaryTree) Add(value interface{}) {
 }
 
 type BinaryNode struct {
-	Value  interface{}
+	Value  any
 	l, r   *BinaryNode
 	height int
 }
@@ -66,7 +66,7 @@ func (n *BinaryNode) postorder() {
 	fmt.Printf("%d ", n.Value)
 }
 
-func (n *BinaryNode) Less(v interface{}) bool {
+func (n *BinaryNode) Less(v any) bool {
 	switch n.Value.(type) {
 	case int:
 		return n.Value.(int) < v.(int)
@@ -77,7 +77,7 @@ func (n *BinaryNode) Less(v interface{}) bool {
 }
 
 // NewNode create new binary node
-func NewNode(value interface{}) *BinaryNode {
+func NewNode(value any) *BinaryNode {
 	return &BinaryNode{
 		Value:  value,
 		l:      nil,
@@ -115,7 +115,7 @@ func (n *BinaryNode) heightDifference() int {
 	return leftTarget - rightTarget
 }
 
-func (n *BinaryNode) Add(value interface{}) *BinaryNode {
+func (n *BinaryNode) Add(value any) *BinaryNode {
 	//fmt.Printf("[Add] cur node %d, left %v, right %v\n", n.Value, n.l, n.r)
 	newRoot := n
 	// if vale <= n.Value
@@ -143,7 +143,7 @@ func (n *BinaryNode) Add(value interface{}) *BinaryNode {
 }
 
 // Add value to parent subtree(if exists) and return root in case it has changed because of rotation
-func (n *BinaryNode) addToSubTree(parent *BinaryNode, value interface{}) *BinaryNode {
+func (n *BinaryNode) addToSubTree(parent *BinaryNode, value any) *BinaryNode {
 	//fmt.Printf("[addToSubTree]cur node %d,  left %v, right %v\n", n.Value, n.l, n.r)
 	if parent == nil {
 		return NewNode(value)
@@ -296,7 +296,7 @@ func (n *BinaryNode) invertion() *BinaryNode {
 */
 // Remove value from Binary Tree. Works in conjunction with
 // remove method in Binary Tree.
-func (n *BinaryNode) remove(value interface{}) *BinaryNode {
+func (n *BinaryNode) remove(value any) *BinaryNode {
 
 	newRoot := n
 
@@ -352,7 +352,7 @@ func (n *BinaryNode) remove(value interface{}) *BinaryNode {
 
 // Helper method for remove, Ensures proper behaivor when
 // removing node that has children.
-func (n *BinaryNode) removeFromParent(parent *BinaryNode, value interface{}) *BinaryNode {
+func (n *BinaryNode) removeFromParent(parent *BinaryNode, value any) *BinaryNode {
 	if parent != nil {
 		return parent.remove(value)
 	}

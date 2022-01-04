@@ -43,18 +43,18 @@ func (i *IntSlice) Swap(a, b int) {
 	i.Slices[a], i.Slices[b] = i.Slices[b], i.Slices[a]
 }
 
-func (i *IntSlice) HashCode(v interface{}) uint64 {
+func (i *IntSlice) HashCode(v any) uint64 {
 	return countHash(v)
 }
 
-func (i *IntSlice) IndexOrSet(a int, val interface{}) interface{} {
+func (i *IntSlice) IndexOrSet(a int, val any) any {
 	if val != nil {
 		i.Slices[a] = val.(int)
 	}
 	return i.Slices[a]
 }
 
-func (i *IntSlice) Convert(slices []interface{}) []int {
+func (i *IntSlice) Convert(slices []any) []int {
 	s := make([]int, len(slices))
 	for i, v := range slices {
 		s[i] = v.(int)
@@ -76,7 +76,7 @@ func (i *IntSlice) Clone(inter interface{}) interface{} {
 	return nInter.Interface()
 }
 */
-func (i *IntSlice) Clone() (interface{}, string, error) {
+func (i *IntSlice) Clone() (any, string, error) {
 	cp := *i
 	tname := reflect.TypeOf(cp)
 	ns, err := copySlice(i.Slices)
@@ -122,11 +122,11 @@ func (s *StringSlice) Swap(a, b int) {
 	s.Slices[a], s.Slices[b] = s.Slices[b], s.Slices[a]
 }
 
-func (s *StringSlice) HashCode(v interface{}) uint64 {
+func (s *StringSlice) HashCode(v any) uint64 {
 	return countHash(v)
 }
 
-func (s *StringSlice) IndexOrSet(a int, val interface{}) interface{} {
+func (s *StringSlice) IndexOrSet(a int, val any) any {
 	if val != nil {
 		s.Slices[a] = val.(string)
 		//s.Slices[a] = val.(string)
@@ -134,7 +134,7 @@ func (s *StringSlice) IndexOrSet(a int, val interface{}) interface{} {
 	return s.Slices[a]
 }
 
-func (s *StringSlice) Convert(slices []interface{}) []string {
+func (s *StringSlice) Convert(slices []any) []string {
 	t := make([]string, len(slices))
 	for i, v := range slices {
 		t[i] = v.(string)
@@ -142,7 +142,7 @@ func (s *StringSlice) Convert(slices []interface{}) []string {
 	return t
 }
 
-func (s *StringSlice) Clone() (interface{}, string, error) {
+func (s *StringSlice) Clone() (any, string, error) {
 	cp := *s
 	tname := reflect.TypeOf(cp)
 	ns, err := copySlice(s.Slices)
