@@ -1,4 +1,11 @@
 #include<stdio.h>
 
-struct node { int cnt; int* edges; };
-struct graph { int V; int E; node *adj; };
+typedef struct { int v; int w; } Edge;
+Edge EDGE (int, int);
+typedef struct graph *Graph;
+Graph GRAPHinit (int);
+void GRAPHinsertE (Graph, Edge);
+void GRAPHremoveE (Graph, Edge);
+int GRAPHedges (Edge [], Graph G);
+Graph GRAPHcopy (Graph);
+void GRAPHdestroy (Graph);
